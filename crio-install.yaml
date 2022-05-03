@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: true
+  vars:
+      os: CentOS_8
+      version: 1.22
+  tasks:
+      - name: Install packages that allow apt to be used over HTTPS
+        yum:
+            name: "{{ packages }}"
+            state: present
+            update_cache: yes
+        vars:
+            packages:
+                - ca-certificates
+                - curl
+
+      - name: Add base crio repo
+        get_url:
+            url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ os }}/devel:kubic:libcontainers:stable.repo
+            dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo
+            force: yes
+
+      - name: Add crio version repo
+        get_url:
+            url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ version }}/{{ os }}/devel:kubic:libcontainers:stable:cri-o:{{ version }}.repo
+            dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:{{ version }}.repo
+            force: yes
+
+      - name: Install crio
+        yum:
+            name: cri-o
+            state: present
+            update_cache: yes
+
+      - name: Enable and start crio service
+        systemd:
+            name: crio
+            enabled: yes
+            state: started
