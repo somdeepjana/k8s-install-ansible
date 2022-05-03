@@ -1,8 +1,6 @@
 ---
 - hosts: all
   become: true
-  vars:
-      version: 1.22.5
   tasks:
       - name: Enable bridge network traffic
         modprobe:
@@ -44,17 +42,15 @@
             disable_excludes: Kubernetes
         vars:
             packages:
-                - kubelet-{{ version }}
-                - kubeadm-{{ version }}
+                - kubelet-{{ k8s_version }}
+                - kubeadm-{{ k8s_version }}
 
 - hosts: k8s_master
   become: true
-  vars:
-      version: 1.22.5
   tasks:
       - name: Install kubectl in k8s  control machine
         yum:
-            name: kubectl-{{ version }}
+            name: kubectl-{{ k8s_version }}
             state: present
             update_cache: yes
             disable_excludes: Kubernetes

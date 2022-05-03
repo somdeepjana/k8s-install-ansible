@@ -1,0 +1,6 @@
+- hosts: all
+  name: apply common configuration to all nodes
+  become: true
+
+  roles:
+    - common
