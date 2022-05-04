@@ -1,0 +1,17 @@
+---
+- name: Disable swap for current session
+  command: swapoff -a
+
+- name: Disable SWAP memory mount partision
+  replace:
+    path: /etc/fstab
+    regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+    replace: '#\1\2\3swap\4'
+    backup: yes
+
+- name: Apply swap memory fstab chnages
+  command: mount -a
+
+- name: demon reload systemctl for swap disable chnages
+  systemd:
+    daemon_reload: yes

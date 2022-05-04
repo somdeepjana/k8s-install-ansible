@@ -1,0 +1,8 @@
+---
+- name: Disable SELinux for current session
+  command: setenforce 0
+  ignore_errors: yes
+
+- name: Disable parmanently SELinux
+  selinux:
+    state: disabled
