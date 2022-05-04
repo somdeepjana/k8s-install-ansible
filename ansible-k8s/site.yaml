@@ -1,6 +1,12 @@
 - hosts: all
-  name: apply common configuration to all nodes
+  name: Installing Common applications
   become: true
-
   roles:
-    - common
+    - crio
+    - k8s-common-install
+
+- hosts: k8s_master
+  name: K8S Control machine setup
+  become: true
+  roles:
+    - k8s-control

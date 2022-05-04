@@ -1,0 +1,7 @@
+---
+- name: Install kubectl in k8s  control machine
+  yum:
+    name: kubectl-{{ k8s_version }}
+    state: present
+    update_cache: yes
+    disable_excludes: Kubernetes
