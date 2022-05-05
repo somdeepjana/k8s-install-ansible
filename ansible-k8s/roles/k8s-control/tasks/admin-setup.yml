@@ -5,3 +5,21 @@
     state: present
     update_cache: yes
     disable_excludes: Kubernetes
+
+- name: get reference to kubernetes admin user
+  user:
+    name: "{{ admin_user }}"
+    state: present
+  register: k8s_admin_user
+
+- name: create .kube folder if not exist
+  command: mkdir -p "{{ k8s_admin_user.home }}/.kube"
+
+- name: Copy admin kube config file for user
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ k8s_admin_user.home }}/.kube/config"
+    owner: "{{ admin_user }}"
+    group: "{{ admin_group }}"
+    backup: yes
+    remote_src: yes
