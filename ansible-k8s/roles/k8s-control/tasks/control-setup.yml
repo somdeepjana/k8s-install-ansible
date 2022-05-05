@@ -1,2 +1,8 @@
-- name: Initiate kubeadm control machine
+- name: check kubernetes etcd file exist
+  stat: 
+    path: /etc/kubernetes/manifests/etcd.yaml
+  register: k8s_etcdfile
+
+- name: Initiate kubeadm control machine when etcd is not present
   command: kubeadm init --pod-network-cidr={{ network_cider }}
+  when: k8s_etcdfile.stat.exists == false

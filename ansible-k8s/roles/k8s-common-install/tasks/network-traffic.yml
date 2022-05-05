@@ -1,4 +1,11 @@
 ---
+- name: Adding modules to startup module-load.d/k8s.conf
+  copy:
+    src: k8s.conf
+    dest: /etc/modules-load.d/
+    group: root
+    owner: root
+
 - name: Enable bridge network traffic
   modprobe:
       name: br_netfilter
