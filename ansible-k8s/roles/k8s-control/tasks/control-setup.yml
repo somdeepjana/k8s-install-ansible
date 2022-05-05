@@ -1,0 +1,2 @@
+- name: Initiate kubeadm control machine
+  command: kubeadm init --pod-network-cidr={{ network_cider }}

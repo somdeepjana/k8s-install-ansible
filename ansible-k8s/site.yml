@@ -3,10 +3,10 @@
   become: true
   roles:
     - crio
-    # - k8s-common-install
+    - k8s-common-install
 
-# - hosts: control_plane
-#   name: K8S Control machine setup
-#   become: true
-#   roles:
-#     - k8s-control
+- hosts: control_plane
+  name: K8S Control machine setup
+  become: true
+  roles:
+    - k8s-control

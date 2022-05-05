@@ -1,3 +1,5 @@
 ---
 # tasks file for k8s-control
-- include: install-package.yml
+
+- include: control-setup.yml
+- include: admin-setup.yml
