@@ -14,11 +14,18 @@
 
 - name: Install kubelet and kubeadm package
   yum:
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-      disable_excludes: Kubernetes
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+    disable_excludes: Kubernetes
   vars:
-      packages:
-          - kubelet-{{ k8s_version }}
-          - kubeadm-{{ k8s_version }}
+    packages:
+        - kubelet-{{ k8s_version }}
+        - kubeadm-{{ k8s_version }}
+
+- name: Enable kubelet demon
+  systemd:
+    name: kubelet
+    enabled: yes
+    daemon_reload: yes
+    state: started
