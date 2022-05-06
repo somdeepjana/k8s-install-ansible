@@ -1,5 +1,5 @@
 ---
 # tasks file for k8s-control
 
-- include: control-setup.yml
-- include: admin-setup.yml
+# - include: control-setup.yml
+- include: joining-command.yml

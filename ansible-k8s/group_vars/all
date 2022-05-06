@@ -7,3 +7,5 @@ network_cider: 10.244.0.0/16
 
 admin_user: vagrant
 admin_group: vagrant
+
+cni_manifest: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml

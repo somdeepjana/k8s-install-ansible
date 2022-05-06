@@ -1,4 +1,5 @@
 .vagrant/
+install_artifacts/
 
 id_rsa
 id_rsa.pub

@@ -1,0 +1,5 @@
+---
+- name: Install fannel
+  become: no
+  become_user: "{{ admin_user }}"
+  command: kubectl apply -f {{ cni_manifest }}

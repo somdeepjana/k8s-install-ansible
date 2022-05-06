@@ -6,3 +6,10 @@
 - name: Initiate kubeadm control machine when etcd is not present
   command: kubeadm init --pod-network-cidr={{ network_cider }}
   when: k8s_etcdfile.stat.exists == false
+  register: kubeadm_init
+
+- include: admin-setup.yml
+  when: kubeadm_init.changed == true
+
+- include: pod-network-setup.yml
+  when: kubeadm_init.changed == true

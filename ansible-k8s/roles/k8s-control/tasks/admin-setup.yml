@@ -6,6 +6,11 @@
     update_cache: yes
     disable_excludes: Kubernetes
 
+- name: fetch admin kube config file
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ playbook_dir }}/install_artifacts"
+
 - name: get reference to kubernetes admin user
   user:
     name: "{{ admin_user }}"
