@@ -1,0 +1,15 @@
+---
+# tasks file for k8s-node
+
+- name: reset previous kube setup if reset_setup var is setup
+  command: kubeadm reset -f
+  when: reset_install == true
+
+- name: check kubernetes etcd file exist
+  stat: 
+    path: /etc/kubernetes/manifests/etcd.yaml
+  register: k8s_node_etcdfile
+
+- name: Join node to kubeernetes control plane when etcd is not present
+  command: "{{ lookup('file', '{{ playbook_dir }}/install_artifacts/join-command') }}"
+  when: k8s_node_etcdfile.stat.exists == false

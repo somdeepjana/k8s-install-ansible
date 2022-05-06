@@ -1,10 +1,14 @@
+- name: reset previous kube setup if reset_setup var is setup
+  command: kubeadm reset -f
+  when: reset_install == true
+
 - name: check kubernetes etcd file exist
   stat: 
     path: /etc/kubernetes/manifests/etcd.yaml
   register: k8s_etcdfile
 
 - name: Initiate kubeadm control machine when etcd is not present
-  command: kubeadm init --pod-network-cidr={{ network_cider }}
+  command: kubeadm init --pod-network-cidr={{ network_cider }} --apiserver-advertise-address={{ ansible_ssh_host }}
   when: k8s_etcdfile.stat.exists == false
   register: kubeadm_init
 

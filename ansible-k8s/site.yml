@@ -10,3 +10,9 @@
   become: true
   roles:
     - k8s-control
+
+- hosts: node
+  name: K8S Node setup
+  become: true
+  roles:
+    - k8s-node
