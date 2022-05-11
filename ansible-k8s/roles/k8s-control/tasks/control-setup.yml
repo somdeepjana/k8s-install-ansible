@@ -1,6 +1,6 @@
-- name: reset previous kube setup if reset_setup var is setup
-  command: kubeadm reset -f
-  when: reset_install == true
+# - name: reset previous kube setup if reset_setup var is setup
+#   command: kubeadm reset -f
+#   when: reset_install == true
 
 - name: check kubernetes etcd file exist
   stat: 

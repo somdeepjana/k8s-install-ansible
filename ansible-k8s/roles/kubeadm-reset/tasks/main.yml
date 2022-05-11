@@ -1,0 +1,27 @@
+---
+# tasks file for kubeadm-reset
+- name: Starting kubeadm reset
+  command: kubeadm reset -f
+  ignore_errors: yes
+
+- name: Flushing iptable entries
+  iptables:
+    flush: yes
+
+- name: Deleteing kube directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/lib/cni/
+    - /var/lib/kubelet
+    - /run/flannel
+    - /etc/cni/
+
+- name: Delete IP link cni0 for flannel
+  command: ip link delete cni0
+  ignore_errors: yes
+
+- name: Delete IP link flannel.1
+  command: ip link delete flannel.1
+  ignore_errors: yes
