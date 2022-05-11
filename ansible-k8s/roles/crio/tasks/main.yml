@@ -4,7 +4,6 @@
   yum:
     name: "{{ packages }}"
     state: present
-    update_cache: yes
   vars:
     packages:
       - ca-certificates
@@ -26,7 +25,6 @@
   yum:
     name: cri-o
     state: present
-    update_cache: yes
 
 - name: Enable and start crio service
   systemd:
@@ -38,4 +36,3 @@
   yum:
     name: crictl
     state: present
-    update_cache: yes

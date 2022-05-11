@@ -1,0 +1,31 @@
+---
+- name: Install bash auto complete
+  yum:
+    name: bash-completion
+    state: present
+
+- name: Add kubectl auto completion
+  become: no
+  become_user: "{{ admin_user }}"
+  lineinfile:
+    path:  "$HOME/.bashrc"
+    line: "source <(kubectl completion bash)"
+    state: present
+
+- name: Add kubectl auto completion
+  become: no
+  become_user: "{{ admin_user }}"
+  lineinfile:
+    path:  "$HOME/.bashrc"
+    line: source <(kubectl completion bash)
+    state: present
+
+- name: Add kubectl auto completion alias
+  become: no
+  become_user: "{{ admin_user }}"
+  blockinfile:
+    path:  "$HOME/.bashrc"
+    block : |
+      alias k=kubectl
+      complete -F __start_kubectl k
+    state: present

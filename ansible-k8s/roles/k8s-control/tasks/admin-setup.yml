@@ -3,8 +3,10 @@
   yum:
     name: kubectl-{{ k8s_version }}
     state: present
-    update_cache: yes
     disable_excludes: Kubernetes
+
+- name: Kubectl extra setup for usability
+  include: kubectl-extras.yml
 
 - name: fetch admin kube config file
   fetch:
@@ -18,7 +20,9 @@
   register: k8s_admin_user
 
 - name: create .kube folder if not exist
-  command: mkdir -p "{{ k8s_admin_user.home }}/.kube"
+  become: no
+  become_user: "{{ admin_user }}"
+  command: mkdir -p $HOME/.kube
 
 - name: Copy admin kube config file for user
   copy:

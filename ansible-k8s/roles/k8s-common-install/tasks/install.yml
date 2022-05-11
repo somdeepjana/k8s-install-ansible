@@ -16,12 +16,16 @@
   yum:
     name: "{{ packages }}"
     state: present
-    update_cache: yes
     disable_excludes: Kubernetes
   vars:
     packages:
         - kubelet-{{ k8s_version }}
         - kubeadm-{{ k8s_version }}
+
+- name: Configure node ip for kubelet
+  lineinfile:
+    path: /etc/sysconfig/kubelet
+    line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_ssh_host }}
 
 - name: Enable kubelet demon
   systemd:

@@ -8,8 +8,16 @@
 
 - name: Enable bridge network traffic
   modprobe:
-      name: br_netfilter
+      name: "{{ item }}"
       state: present
+  loop:
+      - br_netfilter
+      - nf_nat
+      - xt_REDIRECT
+      - xt_owner
+      - iptable_nat
+      - iptable_mangle
+      - iptable_filter
 
 - name: Enable bridge network to see ipv6 traffic
   sysctl:
