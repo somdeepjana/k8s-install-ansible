@@ -3,7 +3,3 @@
   become: true
   roles:
     - kubeadm-reset
-
-  tasks:
-    - name: Reboot system for networking bug fix
-      reboot:

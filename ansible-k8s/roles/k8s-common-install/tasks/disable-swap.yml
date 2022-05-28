@@ -9,6 +9,13 @@
     replace: '#\1\2\3swap\4'
     backup: yes
 
+- name: Disable VM swapiness
+  sysctl:
+    name: "vm.swappiness"
+    value: 0
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    state: present
+
 - name: Apply swap memory fstab chnages
   command: mount -a
 

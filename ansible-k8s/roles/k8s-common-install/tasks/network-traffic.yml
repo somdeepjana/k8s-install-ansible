@@ -10,32 +10,15 @@
   modprobe:
       name: "{{ item }}"
       state: present
+  loop: "{{ lookup('file', 'k8s.conf').splitlines() }}"
+
+- name: Enable bridge network to see network traffic
+  sysctl:
+      name: "{{ item.key }}"
+      value: "{{ item.value }}"
+      sysctl_file: /etc/sysctl.d/k8s.conf
+      state: present
   loop:
-      - br_netfilter
-      - nf_nat
-      - xt_REDIRECT
-      - xt_owner
-      - iptable_nat
-      - iptable_mangle
-      - iptable_filter
-
-- name: Enable bridge network to see ipv6 traffic
-  sysctl:
-      name: net.bridge.bridge-nf-call-ip6tables
-      value: 1
-      sysctl_file: /etc/sysctl.d/k8s.conf
-      state: present
-
-- name: Enable bridge network to see ipv4 traffic
-  sysctl:
-      name: net.bridge.bridge-nf-call-iptables
-      value: 1
-      sysctl_file: /etc/sysctl.d/k8s.conf
-      state: present
-
-- name: Enable ip forward
-  sysctl:
-      name: net.ipv4.ip_forward
-      value: 1
-      sysctl_file: /etc/sysctl.d/k8s.conf
-      state: present
+    - { key: "net.bridge.bridge-nf-call-ip6tables", value: 1 }
+    - { key: "net.bridge.bridge-nf-call-iptables", value: 1 }
+    - { key: "net.ipv4.ip_forward", value: 1 }

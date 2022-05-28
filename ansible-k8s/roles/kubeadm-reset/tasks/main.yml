@@ -4,19 +4,22 @@
   command: kubeadm reset -f
   ignore_errors: yes
 
-- name: Flushing iptable entries
-  iptables:
-    flush: yes
-
 - name: Deleteing kube directories
   file:
     path: "{{ item }}"
     state: absent
   loop:
-    - /var/lib/cni/
-    - /var/lib/kubelet
+    - /etc/cni/net.d
     - /run/flannel
-    - /etc/cni/
+    - /run/calico
+
+- name: Flushing iptable entries
+  iptables:
+    flush: yes
+
+- name: cleaning ipvs table
+  command: ipvsadm --clear
+  ignore_errors: yes
 
 - name: Delete IP link cni0 for flannel
   command: ip link delete cni0
@@ -25,3 +28,6 @@
 - name: Delete IP link flannel.1
   command: ip link delete flannel.1
   ignore_errors: yes
+
+- name: Reboot system for networking bug fix
+  reboot:

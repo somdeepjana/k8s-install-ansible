@@ -1,0 +1,5 @@
+- hosts: control_plane
+  name: tryout
+  become: true
+  roles:
+    - k8s-common-install

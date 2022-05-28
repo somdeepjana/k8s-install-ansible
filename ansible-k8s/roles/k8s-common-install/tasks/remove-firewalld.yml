@@ -1,10 +1,10 @@
 ---
-- name: Disable firewalld systemd demon
-  systemd:
-    name: firewalld
-    enabled: no
-    state: stopped
-  ignore_errors: yes
+# - name: Disable firewalld systemd demon
+#   systemd:
+#     name: firewalld
+#     enabled: no
+#     state: stopped
+#   ignore_errors: yes
 
 - name: Remove firewalld from system
   yum:

@@ -3,6 +3,7 @@ BOX_URL = "https://oracle.github.io/vagrant-projects/boxes/oraclelinux/8.json"
 N = 2
 
 Vagrant.configure("2") do |config|
+    config.vbguest.auto_update = false
     config.ssh.insert_key = false
 	config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 

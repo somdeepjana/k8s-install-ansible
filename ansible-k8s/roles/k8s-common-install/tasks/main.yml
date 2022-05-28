@@ -1,4 +1,4 @@
 ---
 # tasks file for k8s-common-install
-- include: presetup.yml
-- include: install.yml
+- ansible.builtin.import_tasks: presetup.yml
+- ansible.builtin.import_tasks: install.yml

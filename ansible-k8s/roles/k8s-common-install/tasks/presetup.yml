@@ -1,5 +1,5 @@
 ---
-- include: disable-selinux.yml
-- include: remove-firewalld.yml
-- include: network-traffic.yml
-- include: disable-swap.yml
+- ansible.builtin.import_tasks: disable-selinux.yml
+- ansible.builtin.import_tasks: remove-firewalld.yml
+- ansible.builtin.import_tasks: network-traffic.yml
+- ansible.builtin.import_tasks: disable-swap.yml

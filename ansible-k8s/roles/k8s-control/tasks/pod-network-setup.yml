@@ -14,5 +14,5 @@
   become_user: "{{ admin_user }}"
   command: kubectl apply -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
 
-- name: Reboot system for networking bug fix
-  reboot:
+# - name: Reboot system for networking bug fix
+#   reboot:
