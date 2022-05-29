@@ -1,5 +1,9 @@
-- hosts: all
+- hosts: cluster
   name: Resetting kubeadm
-  become: true
+  become: yes
   roles:
-    - kubeadm-reset
+      - kubeadm-reset
+
+  tasks:
+      - name: Reboot system for networking bug fix
+        reboot:

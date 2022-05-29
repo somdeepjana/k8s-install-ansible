@@ -1,18 +1,19 @@
-- hosts: all
+- hosts: cluster
   name: Installing Common applications
   become: true
   roles:
-    - crio
-    - k8s-common-install
+      - crio
+      - k8s-common-install
 
 - hosts: control_plane
   name: K8S Control machine setup
   become: true
   roles:
-    - k8s-control
+      - k8s-control
+      #   - cni
 
 - hosts: node
   name: K8S Node setup
   become: true
   roles:
-    - k8s-node
+      - k8s-node

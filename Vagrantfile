@@ -8,6 +8,7 @@ Vagrant.configure("2") do |config|
 	config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
     config.vm.provider "virtualbox" do |v|
+        v.gui = false
         v.memory = 4096
         v.cpus = 2
     end
@@ -15,7 +16,7 @@ Vagrant.configure("2") do |config|
 	config.vm.define "ansible-control" do |control|
         control.vm.box = BOX_NAME
         control.vm.box_url = BOX_URL
-        control.vm.network "private_network", ip: "192.168.50.9"
+        control.vm.network "private_network", ip: "192.168.50.9", auto_config: true
         control.vm.hostname = "ansible-control"
         control.vm.provision "shell", path: "provisions/ansible-control.sh"
     end
@@ -23,7 +24,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "k8s-master" do |master|
         master.vm.box = BOX_NAME
         master.vm.box_url = BOX_URL
-        master.vm.network "private_network", ip: "192.168.50.10"
+        master.vm.network "private_network", ip: "192.168.50.10", auto_config: true
         master.vm.hostname = "k8s-master"
         master.vm.provision "shell", path: "provisions/add-common-ssh.sh"
     end
@@ -32,7 +33,7 @@ Vagrant.configure("2") do |config|
         config.vm.define "node-#{i}" do |node|
             node.vm.box = BOX_NAME
             node.vm.box_url = BOX_URL
-            node.vm.network "private_network", ip: "192.168.50.#{i + 10}"
+            node.vm.network "private_network", ip: "192.168.50.#{i + 10}", auto_config: true
             node.vm.hostname = "node-#{i}"
             node.vm.provision "shell", path: "provisions/add-common-ssh.sh"
         end
