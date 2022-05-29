@@ -1,6 +1,26 @@
-- hosts: control_plane
+- hosts: reset_node
   name: tryout
   become: no
   become_user: "{{ admin_user }}"
-  roles:
-    - istio-install
+  tasks:
+    # - name: collect facts about system services
+    #   service_facts:
+    #   register: services_state
+
+    # - name: Debug
+    #   debug:
+    #     var: services_state
+
+    - name: Get Service Status
+      ansible.builtin.systemd:
+        name: "kubelet"
+      register: kubelet_service
+
+    - name: Debug
+      debug:
+        var: kubelet_service
+
+    - name: run check
+      ansible.builtin.debug:
+        msg: kubelet is not running
+      when: kubelet_service.status.ActiveState != "active"

@@ -2,7 +2,7 @@
   name: Installing Common applications
   become: true
   roles:
-      - crio
+      # - crio
       - k8s-common-install
 
 - hosts: control_plane

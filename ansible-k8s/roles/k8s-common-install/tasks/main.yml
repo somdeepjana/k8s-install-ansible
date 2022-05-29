@@ -1,4 +1,20 @@
 ---
 # tasks file for k8s-common-install
-- ansible.builtin.import_tasks: presetup.yml
-- ansible.builtin.import_tasks: install.yml
+
+- name: Get Service Status
+  ansible.builtin.systemd:
+    name: "kubelet"
+  register: kubelet_service
+
+- name: start kube presetup if kubelet is not running
+  ansible.builtin.import_tasks: presetup.yml
+  when: kubelet_service.status.ActiveState != "active"
+
+- name: start kube presetup if kubelet is not running
+  ansible.builtin.import_role: 
+    name: crio
+  when: kubelet_service.status.ActiveState != "active"
+
+- name: install kube packages 
+  ansible.builtin.import_tasks: install.yml
+  when: kubelet_service.status.ActiveState != "active"
