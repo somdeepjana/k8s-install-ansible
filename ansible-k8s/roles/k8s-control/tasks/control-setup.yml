@@ -1,15 +1,10 @@
 ---
-# - name: check kubernetes etcd file exist
-#   stat:
-#       path: "/etc/kubernetes/pki/ca.key"
-#   register: k8s_etcdfile
 
-- name: Initiate kubeadm control machine when etcd is not present
+- name: Initiate kubeadm control machine 
   command: kubeadm init --pod-network-cidr={{ network_cider }} --apiserver-advertise-address={{ ansible_ssh_host }} --apiserver-cert-extra-sans={{ ansible_ssh_host }}
-  # when: not k8s_etcdfile.stat.exists
-  # register: kubeadm_init
 
 - import_tasks: admin-setup.yml
-  # when: kubeadm_init.changed == true
-- import_tasks: pod-network-setup.yml
-# when: kubeadm_init.changed == true
+
+- ansible.builtin.import_role: 
+    name: cni
+    

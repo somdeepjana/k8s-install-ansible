@@ -1,0 +1,7 @@
+- name: Reset Kubernetes component
+  command: "kubeadm reset --force"
+  ignore_errors: yes
+
+- name: Join to Kubernetes cluster
+  command: "{{ lookup('file', '{{ playbook_dir }}/install_artifacts/join-command') }}"
+  register: join_cluster

@@ -26,10 +26,3 @@
   lineinfile:
       path: /etc/sysconfig/kubelet
       line: KUBELET_EXTRA_ARGS=--node-ip={{ ansible_ssh_host }}
-
-- name: Enable kubelet demon
-  systemd:
-      name: kubelet
-      enabled: yes
-      daemon_reload: yes
-      state: started

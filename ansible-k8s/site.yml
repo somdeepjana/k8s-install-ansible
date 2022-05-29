@@ -10,10 +10,16 @@
   become: true
   roles:
       - k8s-control
-      #   - cni
 
 - hosts: node
   name: K8S Node setup
   become: true
   roles:
       - k8s-node
+
+- hosts: control_plane
+  name: istio setup
+  become: no
+  become_user: "{{ admin_user }}"
+  roles:
+    - istio-install

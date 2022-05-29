@@ -1,5 +1,6 @@
 - hosts: control_plane
   name: tryout
-  become: true
+  become: no
+  become_user: "{{ admin_user }}"
   roles:
-    - k8s-common-install
+    - istio-install

@@ -3,6 +3,8 @@ crio_version: 1.22
 
 k8s_version: 1.22.5
 
+istio_version: 1.13.4
+
 network_interface: "eth1"
 
 network_cider: 10.244.0.0/16

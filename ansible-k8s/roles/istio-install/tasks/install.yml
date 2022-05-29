@@ -1,0 +1,40 @@
+---
+# tasks file for istio-install
+- name: Download istio in home directory
+  become: no
+  become_user: "{{ admin_user }}"
+  shell: "curl -L https://istio.io/downloadIstio | ISTIO_VERSION={{ istio_version }} TARGET_ARCH=x86_64 sh -"
+
+- name: get reference to kubernetes admin user
+  become: no
+  become_user: "{{ admin_user }}"
+  user:
+    name: "{{ admin_user }}"
+    state: present
+  register: k8s_admin_user
+
+- name: Set istio in bin directory enviorment variable
+  become: no
+  become_user: "{{ admin_user }}"
+  ansible.builtin.lineinfile:
+    path: "{{ k8s_admin_user.home }}/.bash_profile"
+    regexp: '^ISTIO_HOME='
+    line: ISTIO_HOME={{ k8s_admin_user.home }}/istio-{{ istio_version }}
+
+- name: Set istio bin in user path
+  become: no
+  become_user: "{{ admin_user }}"
+  ansible.builtin.lineinfile:
+    path: "{{ k8s_admin_user.home }}/.bash_profile"
+    line: "PATH=${ISTIO_HOME}/bin:$PATH"
+
+- name: Uninstall previous istio artifacts if any
+  become: no
+  become_user: "{{ admin_user }}"
+  command: "{{ k8s_admin_user.home }}/istio-{{ istio_version }}/bin/istioctl x uninstall --purge -y"
+  ignore_errors: yes
+
+- name: Install istio mesh
+  become: no
+  become_user: "{{ admin_user }}"
+  command: "{{ k8s_admin_user.home }}/istio-{{ istio_version }}/bin/istioctl install --set profile=demo -y"

@@ -1,0 +1,8 @@
+- name: Wait for control-plane pods become ready
+  command: "kubectl wait --namespace=istio-system --for=condition=Ready pods --selector app=istio-ingressgateway --timeout=30s"
+  ignore_errors: yes
+  register: istio_ingress
+
+- name: start istio installation if ingress is not runnning
+  when: istio_ingress is failed
+  ansible.builtin.import_tasks: install.yml

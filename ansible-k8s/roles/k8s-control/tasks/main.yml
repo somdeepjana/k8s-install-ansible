@@ -10,5 +10,12 @@
   import_tasks: control-setup.yml
   when: not kubeadm_ca.stat.exists
 
+- name: Enable kubelet demon
+  systemd:
+      name: kubelet
+      enabled: yes
+      daemon_reload: yes
+      state: started
+
 # - include: control-setup.yml
 - import_tasks: joining-command.yml

@@ -1,19 +1,17 @@
 ---
-# - name: reset previous kube setup if reset_setup var is setup
-#   include_role: 
-#     name: kubeadm-reset
-#   when: reset_install == true
 
 - name: check kubernetes conf file exist
   stat: 
     path: /etc/kubernetes/kubelet.conf
-  register: k8s_node_etcdfile
+  register: kubelet_conf
 
-- name: check ettcd id deleted when reset install is setup
-  fail:
-    msg: reset_install for node is selected but unecpectedly `etcd` is present. manually reset the node
-  when: reset_install == true and k8s_node_etcdfile.stat.exists == true
+- name: Join to cluster if needed
+  include_tasks: join.yml
+  when: not kubelet_conf.stat.exists
 
-- name: Join node to kubeernetes control plane when etcd is not present
-  command: "{{ lookup('file', '{{ playbook_dir }}/install_artifacts/join-command') }}"
-  when: k8s_node_etcdfile.stat.exists == false
+- name: Enable and check kubelet service
+  systemd:
+    name: kubelet
+    daemon_reload: yes
+    state: started
+    enabled: yes
