@@ -1,4 +1,4 @@
-- hosts: cluster
+- hosts: reset_node
   name: Resetting kubeadm
   become: yes
   roles:

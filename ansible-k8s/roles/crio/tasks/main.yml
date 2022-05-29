@@ -2,37 +2,52 @@
 # tasks file for crio
 - name: Install packages bace required packages
   yum:
-    name: "{{ packages }}"
-    state: present
+      name: "{{ packages }}"
+      state: present
   vars:
-    packages:
-      - ca-certificates
-      - curl
+      packages:
+          - ca-certificates
+          - curl
 
 - name: Add base crio container runtime repo
   get_url:
-    url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/devel:kubic:libcontainers:stable.repo
-    dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo
-    force: yes
+      url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/devel:kubic:libcontainers:stable.repo
+      dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo
+      force: yes
 
 - name: Add crio main repo
   get_url:
-    url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}/{{ crio_os }}/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.repo
-    dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.repo
-    force: yes
+      url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}/{{ crio_os }}/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.repo
+      dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.repo
+      force: yes
 
 - name: Install crio
   yum:
-    name: cri-o
-    state: present
+      name: cri-o
+      state: present
+
+- name: Copy custom registry configuration
+  ansible.builtin.copy:
+    src: registries.d/
+    dest: /etc/containers/registries.d/
+    owner: root
+    group: root
+
+- name: Copy custom registry configuration
+  ansible.builtin.copy:
+    src: crio.service.d/
+    dest: /etc/systemd/system/crio.service.d/
+    owner: root
+    group: root
 
 - name: Enable and start crio service
   systemd:
-    name: crio
-    enabled: yes
-    state: started
+      name: crio
+      enabled: yes
+      daemon_reload: yes
+      state: started
 
 - name: Install crictl
   yum:
-    name: crictl
-    state: present
+      name: crictl
+      state: present
