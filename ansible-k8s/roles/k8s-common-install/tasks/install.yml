@@ -21,6 +21,10 @@
       packages:
           - kubelet-{{ k8s_version }}
           - kubeadm-{{ k8s_version }}
+  environment:
+      no_proxy: "{{ no_proxy }}"
+      http_proxy: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
 
 - name: Configure node ip for kubelet
   lineinfile:

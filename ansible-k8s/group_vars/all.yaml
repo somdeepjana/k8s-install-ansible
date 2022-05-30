@@ -10,6 +10,10 @@ network_interface: ""
 pod_network_cidr: 10.244.0.0/16
 # network_cider: 192.168.0.0/16
 
+no_proxy: ""
+http_proxy: ""
+https_proxy: ""
+
 admin_user: vagrant
 admin_group: vagrant
 

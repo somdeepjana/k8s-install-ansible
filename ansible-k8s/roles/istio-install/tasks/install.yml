@@ -4,6 +4,10 @@
   become: no
   become_user: "{{ admin_user }}"
   shell: "curl -L https://istio.io/downloadIstio | ISTIO_VERSION={{ istio_version }} TARGET_ARCH=x86_64 sh -"
+  environment:
+    no_proxy: "{{ no_proxy }}"
+    http_proxy: "{{ http_proxy }}"
+    https_proxy: "{{ https_proxy }}"
 
 - name: get reference to kubernetes admin user
   become: no

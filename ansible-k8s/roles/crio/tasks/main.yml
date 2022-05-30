@@ -14,17 +14,29 @@
       url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ crio_os }}/devel:kubic:libcontainers:stable.repo
       dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo
       force: yes
+  environment:
+      no_proxy: "{{ no_proxy }}"
+      http_proxy: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
 
 - name: Add crio main repo
   get_url:
       url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}/{{ crio_os }}/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.repo
       dest: /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}.repo
       force: yes
+  environment:
+      no_proxy: "{{ no_proxy }}"
+      http_proxy: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
 
 - name: Install crio
   yum:
       name: cri-o
       state: present
+  environment:
+      no_proxy: "{{ no_proxy }}"
+      http_proxy: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
 
 - name: Copy custom registry configuration
   ansible.builtin.copy:
