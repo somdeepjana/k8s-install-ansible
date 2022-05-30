@@ -8,3 +8,15 @@
 - ansible.builtin.import_role: 
     name: cni
     
+# - name: Pause for 10 second to fill the cni binaries
+#   pause:
+#     seconds: 20
+
+# - name: restart crio for new iptable entries to take effect
+#   ansible.builtin.systemd:
+#       name: "{{ item }}"
+#       state: restarted
+#       daemon_reload: yes
+#   loop:
+#     - crio
+#     - kubelet

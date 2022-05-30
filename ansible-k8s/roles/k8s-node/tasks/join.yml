@@ -5,3 +5,16 @@
 - name: Join to Kubernetes cluster
   command: "{{ lookup('file', '{{ playbook_dir }}/install_artifacts/join-command') }}"
   register: join_cluster
+
+# - name: Pause for 10 second to fill the cni binaries
+#   pause:
+#     seconds: 20
+
+# - name: restart crio and kubelet for new iptable entries to take effect
+#   ansible.builtin.systemd:
+#       name: "{{ item }}"
+#       state: restarted
+#       daemon_reload: yes
+#   loop:
+#     - crio
+#     - kubelet
