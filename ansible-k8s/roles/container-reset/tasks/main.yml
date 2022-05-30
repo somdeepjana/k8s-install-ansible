@@ -1,0 +1,4 @@
+---
+# tasks file for container-reset
+
+- import_tasks: remove-docker.yml

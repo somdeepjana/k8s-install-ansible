@@ -4,6 +4,10 @@
       name: kubectl-{{ k8s_version }}
       state: present
       disable_excludes: Kubernetes
+  environment:
+      no_proxy: "{{ no_proxy }}"
+      http_proxy: "{{ http_proxy }}"
+      https_proxy: "{{ https_proxy }}"
 
 - name: Kubectl extra setup for usability
   include: kubectl-extras.yml

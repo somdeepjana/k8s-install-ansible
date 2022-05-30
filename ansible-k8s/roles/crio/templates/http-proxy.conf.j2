@@ -1,0 +1,13 @@
+[Service]
+
+{% if no_proxy != '' -%}
+Environment="NO_PROXY={{ no_proxy }}"
+{% endif -%}
+
+{% if http_proxy != '' -%}
+Environment="HTTP_PROXY={{ http_proxy }}"
+{% endif -%}
+
+{% if https_proxy != '' -%}
+Environment="HTTPS_PROXY={{ https_proxy }}"
+{% endif -%}

@@ -3,24 +3,11 @@
   become: no
   become_user: "{{ admin_user }}"
   tasks:
-    # - name: collect facts about system services
-    #   service_facts:
-    #   register: services_state
+    - name: Check if kubeadm has already run
+      stat:
+          path: "/var/lib/containerd"
+      register: container
 
-    # - name: Debug
-    #   debug:
-    #     var: services_state
-
-    - name: Get Service Status
-      ansible.builtin.systemd:
-        name: "kubelet"
-      register: kubelet_service
-
-    - name: Debug
-      debug:
-        var: kubelet_service
-
-    - name: run check
+    - name: check vaar content
       ansible.builtin.debug:
-        msg: kubelet is not running
-      when: kubelet_service.status.ActiveState != "active"
+        var: container

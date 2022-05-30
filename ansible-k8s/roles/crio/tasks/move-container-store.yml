@@ -1,0 +1,15 @@
+# - name: geetting move container destination path stattus
+#   ansible.builtin.stat:
+#     path: "{{ move_container_path }}"
+#   register: move_path
+
+- name: removing the directory if it exist
+  file:
+    path: "{{ move_container_path }}"
+    state: absent
+
+
+- name: move containers to destination location
+  ansible.builtin.copy:
+    src: "/var/lib/containers/"
+    dest: "{{ move_container_path }}"

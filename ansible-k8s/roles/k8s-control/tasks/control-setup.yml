@@ -1,10 +1,28 @@
 ---
 
 - name: Initiate kubeadm control machine 
-  command: kubeadm init --pod-network-cidr={{ network_cider }} --apiserver-advertise-address={{ ansible_ssh_host }} --apiserver-cert-extra-sans={{ ansible_ssh_host }}
+  command: |
+    kubeadm init \
+    --pod-network-cidr={{ pod_network_cidr }} \
+    --apiserver-advertise-address={{ ansible_ssh_host }} \
+    --apiserver-cert-extra-sans={{ ansible_ssh_host }} \
+    --kubernetes-version=v{{ k8s_version }} \
+    --cri-socket=/var/run/{{ container_runtime }}/{{ container_runtime }}.sock
 
 - import_tasks: admin-setup.yml
 
 - ansible.builtin.import_role: 
     name: cni
     
+# - name: Pause for 10 second to fill the cni binaries
+#   pause:
+#     seconds: 20
+
+# - name: restart crio for new iptable entries to take effect
+#   ansible.builtin.systemd:
+#       name: "{{ item }}"
+#       state: restarted
+#       daemon_reload: yes
+#   loop:
+#     - crio
+#     - kubelet
