@@ -28,17 +28,17 @@
 
 - name: Copy custom registry configuration
   ansible.builtin.copy:
-    src: registries.d/
-    dest: /etc/containers/registries.d/
-    owner: root
-    group: root
+      src: registries.d/
+      dest: /etc/containers/registries.d/
+      owner: root
+      group: root
 
 - name: Copy custom registry configuration
   ansible.builtin.copy:
-    src: crio.service.d/
-    dest: /etc/systemd/system/crio.service.d/
-    owner: root
-    group: root
+      src: crio.service.d/
+      dest: /etc/systemd/system/crio.service.d/
+      owner: root
+      group: root
 
 - name: Enable and start crio service
   systemd:
@@ -50,4 +50,9 @@
 - name: Install crictl
   yum:
       name: crictl
+      state: present
+
+- name: Install podman
+  yum:
+      name: podman
       state: present
