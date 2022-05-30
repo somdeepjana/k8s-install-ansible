@@ -1,7 +1,13 @@
 ---
 
 - name: Initiate kubeadm control machine 
-  command: kubeadm init --pod-network-cidr={{ network_cider }} --apiserver-advertise-address={{ ansible_ssh_host }} --apiserver-cert-extra-sans={{ ansible_ssh_host }}
+  command: |
+    kubeadm init \
+    --pod-network-cidr={{ pod_network_cidr }} \
+    --apiserver-advertise-address={{ ansible_ssh_host }} \
+    --apiserver-cert-extra-sans={{ ansible_ssh_host }} \
+    --kubernetes-version=v{{ k8s_version }} \
+    --cri-socket=/var/run/{{ container_runtime }}/{{ container_runtime }}.sock
 
 - import_tasks: admin-setup.yml
 

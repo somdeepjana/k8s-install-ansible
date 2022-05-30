@@ -5,20 +5,14 @@ k8s_version: 1.22.5
 
 istio_version: 1.13.4
 
-network_interface: "eth1"
+network_interface: ""
 
-network_cider: 10.244.0.0/16
 pod_network_cidr: 10.244.0.0/16
 # network_cider: 192.168.0.0/16
 
 admin_user: vagrant
 admin_group: vagrant
 
-cni_manifest: https://raw.githubusercontent.com/flannel-io/flannel/v0.18.0/Documentation/kube-flannel.yml
-# cni_manifest: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-
-reset_install: true
-
-network: flannel2
+network: flannel
 network_dir: /etc/kubernetes/network
 kubeadmin_config: /etc/kubernetes/admin.conf
