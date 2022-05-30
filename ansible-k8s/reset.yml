@@ -3,6 +3,7 @@
   become: yes
   roles:
       - kubeadm-reset
+      - container-reset
 
   tasks:
       - name: Reboot system for networking bug fix

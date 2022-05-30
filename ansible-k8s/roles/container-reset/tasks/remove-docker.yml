@@ -1,0 +1,41 @@
+- name: Clean docker system
+  ansible.builtin.command:
+    cmd: docker system prune --volumes -f
+  ignore_errors: yes
+
+- name: Remove docker packages
+  ansible.builtin.yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: absent
+
+- name: Get reference to docker storage loocaation
+  stat:
+      path: "/var/lib/docker"
+  register: docker_dir
+
+- name: Remove docker lib link directory if present
+  file: 
+    path: "{{ docker_dir.stat.lnk_source }}"
+    state: absent
+  when: docker_dir.stat.islnk is defined and docker_dir.stat.islnk
+
+- name: Remove docker lib directory
+  file: 
+    path: "{{ docker_dir.stat.path }}"
+    state: absent
+  when: docker_dir.stat.exists
+
+- name: Get reference to containerd storage loocaation
+  stat:
+      path: "/var/lib/containerd"
+  register: containerd_dir
+
+- name: Remove containerd lib directory
+  file: 
+    path: "{{ containerd_dir.stat.path }}"
+    state: absent
+  when: containerd_dir.stat.exists
