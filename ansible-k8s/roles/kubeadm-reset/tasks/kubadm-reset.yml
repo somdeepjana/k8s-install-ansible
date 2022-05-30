@@ -1,0 +1,70 @@
+---
+# tasks file for kubeadm-reset
+- name: Reset Kubernetes component
+  command: kubeadm reset --force
+  ignore_errors: yes
+
+- name: Deleteing kube directories
+  file:
+      path: "{{ item }}"
+      state: absent
+  loop:
+      - /etc/cni/net.d
+      - /run/flannel
+      - /run/calico
+      - /etc/kubernetes/network
+
+- name: Delete flannel.1 interface
+  command: ip link delete flannel.1
+  ignore_errors: yes
+
+- name: Delete cni0 interface
+  command: ip link delete cni0
+  ignore_errors: yes
+
+- name: Delete tunl0 interface
+  command: modprobe -r ipip
+  ignore_errors: True
+
+- name: Find network interfaces for Kubernetes
+  command: "ip addr | grep {{ item }}"
+  with_items:
+      - "docker0"
+      - "flannel.1"
+      - "cni0"
+      - "tunl0"
+  register: find_eths
+  ignore_errors: True
+
+- name: Delete network interfaces for Kubernetes
+  when: item.stdout != ''
+  command: "ip link delete {{ item.item }}"
+  with_items: "{{ find_eths['results'] }}"
+  ignore_errors: True
+
+- name: Find blackhole route rule
+  shell: "ip route | awk '/blackhole/ {print $2}'"
+  register: find_blackhole
+  ignore_errors: True
+
+- name: Delete blackhole route rule
+  when: find_blackhole.stdout != ''
+  shell: "ip route del {{ find_blackhole.stdout }}"
+  ignore_errors: True
+# - name: Flushing iptable entries
+#   iptables:
+#       flush: yes
+
+# - name: Flushing iptable tnat
+#   command: iptables -tnat --flush
+#   ignore_errors: yes
+
+# - name: cleaning ipvs table
+#   command: ipvsadm --clear
+#   ignore_errors: yes
+
+# - name: restart crio for new iptable entries to take effect
+#   ansible.builtin.systemd:
+#       name: crio
+#       state: reloaded
+#   ignore_errors: yes

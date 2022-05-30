@@ -1,0 +1,20 @@
+- name: Remove docker packages
+  ansible.builtin.yum:
+    name:
+      - kubeadm
+      - kubelet
+      - kubectl
+    state: absent
+
+- name: Remove sysconfig kubelet configurtions
+  file: 
+    path: "/etc/sysconfig/kubelet"
+    state: absent
+
+- name: Removing kubernetes leftout directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/etc/kubernetes/"
+    - "/etc/systemd/system/kubelet.service.d/"
