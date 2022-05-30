@@ -31,8 +31,12 @@
 
 - name: Install crio
   yum:
-      name: cri-o
+      name:
+          - cri-o
+          - crictl
+          - podman
       state: present
+      update_cache: yes
   environment:
       no_proxy: "{{ no_proxy }}"
       http_proxy: "{{ http_proxy }}"
@@ -65,13 +69,3 @@
       enabled: yes
       daemon_reload: yes
       state: started
-
-- name: Install crictl
-  yum:
-      name: crictl
-      state: present
-
-- name: Install podman
-  yum:
-      name: podman
-      state: present

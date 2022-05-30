@@ -16,6 +16,7 @@
   yum:
       name: "{{ packages }}"
       state: present
+      update_cache: yes
       disable_excludes: Kubernetes
   vars:
       packages:
